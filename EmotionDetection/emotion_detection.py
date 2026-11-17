@@ -24,7 +24,7 @@ def emotion_detector(text_to_analyze):
     highest_score = max(emotions.values())
     
     # Get the emotion with the highest score
-    emotion = [[key, value] for key, value in emotions.items() if value == highest_score]
+    emotion = [(key, value) for key, value in emotions.items() if value == highest_score]
 
     # Add the emotion the  with the highest score to response dictionary
     # under 'dominant_emotion' key

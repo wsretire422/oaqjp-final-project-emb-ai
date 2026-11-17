@@ -18,9 +18,32 @@ def sent_detector():
     # Retrieve the text to analyze from the request arguments
     text_to_analyze = request.args.get("textToAnalyze")
     # Pass the text to the emotion_detector function and store the response
-    response = emotion_detector(text_to_analyze)
-
+    emotions = emotion_detector(text_to_analyze)
+    # Convert the dictionary to a list of (key,value) pair turple
+    emotions_list = list(emotions.items())
+    # Call the response_to_string function with the emotions_list as agrument
+    response = response_to_string(emotions_list)
+    # Return the output with the requested format
     return response
+
+def response_to_string(list_1):
+    """ Convert the given list to string ouput
+    """
+    # output string to be returned
+    output = "For the given statment, the system response is "
+    # length of the given list
+    list_len = len(list_1)
+    # Convert the list to string eith the required format
+    for i in range(list_len):
+        if i <= list_len - 4:
+            output += (f"'{list_1[i][0]}': {list_1[i][1]}, ")
+        elif i == list_len - 3:
+            output += (f"'{list_1[i][0]}': {list_1[i][1]} and ")
+        elif i == list_len - 2:
+            output += (f"'{list_1[i][0]}': {list_1[i][1]}. ")
+        elif i == list_len - 1:
+            output += (f"The dominant emotion is {list_1[i][1].split()[0]}.")
+    return output
 
 @app.route("/")
 def render_index_page():
