@@ -1,8 +1,8 @@
 ''' This function initiates the application of emotion detection to be 
     executed over the Flask channel and deployed on localhost:5000.
 '''
-# Import Flask, render_template, request from the flask pramework package : TODO
-# Import the sentiment_analyzer function from the package created: TODO
+# Import Flask, render_template, request from the flask pramework package
+# Import the sentiment_analyzer function from the package created
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
 
@@ -19,6 +19,9 @@ def sent_detector():
     text_to_analyze = request.args.get("textToAnalyze")
     # Pass the text to the emotion_detector function and store the response
     emotions = emotion_detector(text_to_analyze)
+    # Check for dominant_emotion equal to None
+    if emotions["dominant_emotion"] is None:
+        return "Invalid text! Please try again!"
     # Convert the dictionary to a list of (key,value) pair turple
     emotions_list = list(emotions.items())
     # Call the response_to_string function with the emotions_list as agrument
@@ -27,13 +30,13 @@ def sent_detector():
     return response
 
 def response_to_string(list_1):
-    """ Convert the given list to string ouput
+    """ Convert the given list to string ouput according to the required format
     """
     # output string to be returned
     output = "For the given statment, the system response is "
     # length of the given list
     list_len = len(list_1)
-    # Convert the list to string eith the required format
+    # Convert the list to string to the required format
     for i in range(list_len):
         if i <= list_len - 4:
             output += (f"'{list_1[i][0]}': {list_1[i][1]}, ")
